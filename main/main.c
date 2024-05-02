@@ -5,12 +5,14 @@
 // sdkconfig
 #include "../build/include/sdkconfig.h"
 
-// ESP & FreeRTOS
+// FreeRTOS
 #include "FreeRTOSConfig.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/semphr.h"
 #include "freertos/task.h"
 #include "portmacro.h"
+
+// ESP
 #include "driver/gpio.h"
 #include "driver/uart.h"
 #include "errno.h"
@@ -26,8 +28,14 @@
 #include "nvs_flash.h"
 #include "tcpip_adapter.h"
 
+// project includes
+#include "pinout.h"
+
+static void button_isr_handler(void* arg) {}
+
 void app_main() {
   uart_set_baudrate(0, 115200);
+  pinout_gpio_init(button_isr_handler);
 
   while (1) {
     vTaskDelay(pdMS_TO_TICKS(100));
