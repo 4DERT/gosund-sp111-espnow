@@ -30,12 +30,15 @@
 
 // project includes
 #include "pinout.h"
+#include "esp-now-communication.h"
 
 static void button_isr_handler(void* arg) {}
 
 void app_main() {
   uart_set_baudrate(0, 115200);
   pinout_gpio_init(button_isr_handler);
+  nvs_flash_init();
+  esp_now_communication_init();
 
   while (1) {
     vTaskDelay(pdMS_TO_TICKS(100));
