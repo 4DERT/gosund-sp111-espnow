@@ -37,7 +37,7 @@ static void button_isr_handler(void* arg) {}
 
 void app_main() {
   uart_set_baudrate(0, 115200);
-  pinout_gpio_init(button_isr_handler);
+  pinout_gpio_init();
   nvs_flash_init();
   esp_now_communication_init();
 

@@ -15,8 +15,9 @@
 #define PINOUT_LED_LOW 1
 #define PINOUT_BUTTON_PRESSED 0
 
-typedef void(*button_isr_handler_t)(void* arg);
+#define PINOUT_RELAY_HIGH 1
+#define PINOUT_RELAY_LOW 0
 
-void pinout_gpio_init(button_isr_handler_t button_isr_handler);
+void pinout_gpio_init();
 
 #endif //GOSUND_SP111_PINOUT_H_
