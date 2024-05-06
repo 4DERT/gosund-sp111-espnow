@@ -12,6 +12,7 @@
 #include "nvs_flash.h"
 #include "pair.h"
 #include "pinout.h"
+#include "message_handler.h"
 
 static const char *TAG = "esp now com";
 
@@ -173,5 +174,6 @@ void esp_now_receive_task(void *params) {
     }
 
     check_received_pairing_acceptance(&data);
+    msgh_parse_gateway_message(&data);
   }
 }
