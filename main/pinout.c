@@ -1,6 +1,6 @@
 #include "pinout.h"
 
-
+void pinout_gpio_init() {
 void pinout_gpio_init(button_isr_handler_t button_isr_handler) {
   // RELAY
   gpio_config_t relay_cfg;
