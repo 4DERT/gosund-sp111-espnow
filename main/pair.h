@@ -5,5 +5,6 @@
 
 void init_gateway_mac(bool force_pair);
 void check_received_pairing_acceptance(espnow_event_receive_cb_t* data);
+const mac_t* get_gateway_mac();
 
 #endif //PAIR_H_
