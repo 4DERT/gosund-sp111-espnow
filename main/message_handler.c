@@ -69,10 +69,15 @@ static void parse_cmd_3(const char* parameter) {
 }
 
 void msgh_send_cmd_3_status() {
-  const mac_t gateway_mac = *(get_gateway_mac());
+  const mac_t* gateway_mac = get_gateway_mac();
+
+  if(gateway_mac == NULL) {
+    ESP_LOGW(TAG, "Device is not paired");
+    return;
+  }
 
   esp_now_send_t data = {
-      .dest_mac = {.value = gateway_mac.value},
+      .dest_mac = {.value = gateway_mac->value},
       .ack_queue = NULL};
 
   bool status = relay_get_state();
