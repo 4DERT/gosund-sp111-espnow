@@ -31,6 +31,7 @@
 // project includes
 #include "pinout.h"
 #include "esp-now-communication.h"
+#include "pair.h"
 
 static void button_isr_handler(void* arg) {}
 
@@ -39,6 +40,9 @@ void app_main() {
   pinout_gpio_init(button_isr_handler);
   nvs_flash_init();
   esp_now_communication_init();
+
+  bool is_pressed = (gpio_get_level(PINOUT_BUTTON_GPIO) == PINOUT_BUTTON_PRESSED);
+  init_gateway_mac(is_pressed);
 
   while (1) {
     vTaskDelay(pdMS_TO_TICKS(100));

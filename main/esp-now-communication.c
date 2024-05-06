@@ -10,6 +10,7 @@
 #include "esp_wifi.h"
 #include "nvs.h"
 #include "nvs_flash.h"
+#include "pair.h"
 
 static const char *TAG = "esp now com";
 
@@ -165,5 +166,7 @@ void esp_now_receive_task(void *params) {
     if (IS_BROADCAST_ADDR(data.src_mac.bytes)) {
       ESP_LOGI(TAG, "Receive broadcast ESPNOW data");
     }
+
+    check_received_pairing_acceptance(&data);
   }
 }
