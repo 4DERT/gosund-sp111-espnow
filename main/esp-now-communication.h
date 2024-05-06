@@ -49,6 +49,7 @@ typedef struct {
 } espnow_event_receive_cb_t;
 
 extern QueueHandle_t esp_now_send_queue;
+extern const mac_t esp_now_broadcast_mac;
 
 QueueHandle_t esp_now_create_send_ack_queue();
 void esp_now_communication_init();

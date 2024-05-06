@@ -15,8 +15,8 @@ static const char *TAG = "esp now com";
 
 #define ESPNOW_MAXDELAY 100
 
-#define IS_BROADCAST_ADDR(addr) (memcmp(addr, broadcast_mac, ESP_NOW_ETH_ALEN) == 0)
-static uint8_t broadcast_mac[ESP_NOW_ETH_ALEN] = {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
+#define IS_BROADCAST_ADDR(addr) (memcmp(addr, esp_now_broadcast_mac.bytes, ESP_NOW_ETH_ALEN) == 0)
+const mac_t esp_now_broadcast_mac = {.bytes = {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF}};
 
 static void on_esp_now_data_send(const uint8_t *mac_addr, esp_now_send_status_t status);
 static void on_esp_now_data_receive(const uint8_t *mac_addr, const uint8_t *data, int data_len);
