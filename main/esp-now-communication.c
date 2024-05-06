@@ -11,6 +11,7 @@
 #include "nvs.h"
 #include "nvs_flash.h"
 #include "pair.h"
+#include "pinout.h"
 
 static const char *TAG = "esp now com";
 
@@ -113,6 +114,8 @@ void esp_now_send_task(void *params) {
     if (queue_status != pdPASS)
       continue;
 
+    gpio_set_level(PINOUT_LED_BLUE_GPIO, PINOUT_LED_HIGH);
+
     // create peer
     memset(&peer_info, 0, sizeof(esp_now_peer_info_t));
     peer_info.channel = ESP_NOW_CHANNEL;
@@ -146,6 +149,8 @@ void esp_now_send_task(void *params) {
 
     // remove peer
     esp_now_del_peer(peer_info.peer_addr);
+
+    gpio_set_level(PINOUT_LED_BLUE_GPIO, PINOUT_LED_LOW);
   }
 }
 
