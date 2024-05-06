@@ -32,8 +32,7 @@
 #include "pinout.h"
 #include "esp-now-communication.h"
 #include "pair.h"
-
-static void button_isr_handler(void* arg) {}
+#include "button.h"
 
 void app_main() {
   uart_set_baudrate(0, 115200);
@@ -43,6 +42,8 @@ void app_main() {
 
   bool is_pressed = (gpio_get_level(PINOUT_BUTTON_GPIO) == PINOUT_BUTTON_PRESSED);
   init_gateway_mac(is_pressed);
+
+  button_init();
 
   while (1) {
     vTaskDelay(pdMS_TO_TICKS(100));

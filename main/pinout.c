@@ -1,7 +1,6 @@
 #include "pinout.h"
 
 void pinout_gpio_init() {
-void pinout_gpio_init(button_isr_handler_t button_isr_handler) {
   // RELAY
   gpio_config_t relay_cfg;
   relay_cfg.pin_bit_mask = (1UL << PINOUT_RELAY_GPIO);
@@ -33,6 +32,4 @@ void pinout_gpio_init(button_isr_handler_t button_isr_handler) {
   key_cfg.mode = GPIO_MODE_INPUT;
   key_cfg.intr_type = GPIO_INTR_NEGEDGE;
   gpio_config(&key_cfg);
-  gpio_install_isr_service(0);
-  gpio_isr_handler_add(PINOUT_BUTTON_GPIO, button_isr_handler, NULL);
 }
