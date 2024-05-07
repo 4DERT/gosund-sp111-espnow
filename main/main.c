@@ -39,11 +39,9 @@ void app_main() {
   pinout_gpio_init();
   nvs_flash_init();
   esp_now_communication_init();
-
-  bool is_pressed = (gpio_get_level(PINOUT_BUTTON_GPIO) == PINOUT_BUTTON_PRESSED);
-  init_gateway_mac(is_pressed);
-
   button_init();
+
+  init_gateway_mac(button_is_pressed());
 
   while (1) {
     vTaskDelay(pdMS_TO_TICKS(100));

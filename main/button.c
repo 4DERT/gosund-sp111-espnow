@@ -5,7 +5,6 @@
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 #include "message_handler.h"
-#include "pinout.h"
 #include "relay.h"
 
 static TaskHandle_t btn_task_handle;
@@ -28,14 +27,18 @@ static void button_task(void* params) {
 
 void button_init() {
   gpio_config_t key_cfg;
-  key_cfg.pin_bit_mask = (1UL << PINOUT_BUTTON_GPIO);
+  key_cfg.pin_bit_mask = (1UL << BUTTON_GPIO);
   key_cfg.pull_up_en = GPIO_PULLUP_ENABLE;
   key_cfg.mode = GPIO_MODE_INPUT;
   key_cfg.intr_type = GPIO_INTR_NEGEDGE;
   gpio_config(&key_cfg);
 
   gpio_install_isr_service(0);
-  gpio_isr_handler_add(PINOUT_BUTTON_GPIO, button_isr_handler, NULL);
+  gpio_isr_handler_add(BUTTON_GPIO, button_isr_handler, NULL);
 
-  xTaskCreate(button_task, "button_task", 4096, NULL, 1, &btn_task_handle);
+  xTaskCreate(button_task, "button_task", BUTTON_TASK_STACK_DEPTH, NULL, BUTTON_TASK_PRIORITY, &btn_task_handle);
+}
+
+bool button_is_pressed(){
+  return gpio_get_level(BUTTON_GPIO) == BUTTON_PRESSED_LEVEL;
 }

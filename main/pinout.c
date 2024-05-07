@@ -26,10 +26,10 @@ void pinout_gpio_init() {
   gpio_set_level(PINOUT_LED_RED_GPIO, PINOUT_LED_LOW);
 
   // BUTTON
-  gpio_config_t key_cfg;
-  key_cfg.pin_bit_mask = (1UL << PINOUT_BUTTON_GPIO);
-  key_cfg.pull_up_en = GPIO_PULLUP_ENABLE;
-  key_cfg.mode = GPIO_MODE_INPUT;
-  key_cfg.intr_type = GPIO_INTR_NEGEDGE;
-  gpio_config(&key_cfg);
+  // gpio_config_t key_cfg;
+  // key_cfg.pin_bit_mask = (1UL << PINOUT_BUTTON_GPIO);
+  // key_cfg.pull_up_en = GPIO_PULLUP_ENABLE;
+  // key_cfg.mode = GPIO_MODE_INPUT;
+  // key_cfg.intr_type = GPIO_INTR_NEGEDGE;
+  // gpio_config(&key_cfg);
 }
