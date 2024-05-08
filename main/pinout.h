@@ -3,8 +3,6 @@
 
 #include "driver/gpio.h"
 
-
-#define PINOUT_RELAY_GPIO GPIO_NUM_15
 #define PINOUT_LED_BLUE_GPIO GPIO_NUM_2
 #define PINOUT_LED_RED_GPIO GPIO_NUM_0
 #define PINOUT_CF_GPIO GPIO_NUM_5
@@ -14,9 +12,6 @@
 #define PINOUT_LED_HIGH 0
 #define PINOUT_LED_LOW 1
 
-
-#define PINOUT_RELAY_HIGH 1
-#define PINOUT_RELAY_LOW 0
 
 void pinout_gpio_init();
 

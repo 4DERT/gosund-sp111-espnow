@@ -5,22 +5,31 @@
 #include "esp-now-communication.h"
 #include "pinout.h"
 
+void relay_init() {
+  gpio_config_t relay_cfg;
+  relay_cfg.pin_bit_mask = (1UL << RELAY_GPIO);
+  relay_cfg.mode = GPIO_MODE_OUTPUT;
+  relay_cfg.intr_type = GPIO_INTR_DISABLE;
+  gpio_config(&relay_cfg);
+  gpio_set_level(RELAY_GPIO, RELAY_LOW);
+}
+
 bool relay_get_state() {
-  return (gpio_get_level(PINOUT_RELAY_GPIO) == PINOUT_RELAY_HIGH);
+  return (gpio_get_level(RELAY_GPIO) == RELAY_HIGH);
 }
 
 void relay_on() {
-  gpio_set_level(PINOUT_RELAY_GPIO, PINOUT_RELAY_HIGH);
+  gpio_set_level(RELAY_GPIO, RELAY_HIGH);
   gpio_set_level(PINOUT_LED_RED_GPIO, PINOUT_LED_HIGH);
 }
 
 void relay_off() {
-  gpio_set_level(PINOUT_RELAY_GPIO, PINOUT_RELAY_LOW);
+  gpio_set_level(RELAY_GPIO, RELAY_LOW);
   gpio_set_level(PINOUT_LED_RED_GPIO, PINOUT_LED_LOW);
 }
 
 void relay_toggle() {
   const bool state = relay_get_state();
-  gpio_set_level(PINOUT_RELAY_GPIO, !state);
+  gpio_set_level(RELAY_GPIO, !state);
   gpio_set_level(PINOUT_LED_RED_GPIO, (!state ? PINOUT_LED_HIGH : PINOUT_LED_LOW));
 }

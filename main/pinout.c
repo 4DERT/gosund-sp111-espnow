@@ -2,12 +2,12 @@
 
 void pinout_gpio_init() {
   // RELAY
-  gpio_config_t relay_cfg;
-  relay_cfg.pin_bit_mask = (1UL << PINOUT_RELAY_GPIO);
-  relay_cfg.mode = GPIO_MODE_OUTPUT;
-  relay_cfg.intr_type = GPIO_INTR_DISABLE;
-  gpio_config(&relay_cfg);
-  gpio_set_level(PINOUT_RELAY_GPIO, PINOUT_RELAY_LOW);
+  // gpio_config_t relay_cfg;
+  // relay_cfg.pin_bit_mask = (1UL << PINOUT_RELAY_GPIO);
+  // relay_cfg.mode = GPIO_MODE_OUTPUT;
+  // relay_cfg.intr_type = GPIO_INTR_DISABLE;
+  // gpio_config(&relay_cfg);
+  // gpio_set_level(PINOUT_RELAY_GPIO, PINOUT_RELAY_LOW);
 
   // BLUE LED
   gpio_config_t led_blue_cfg;

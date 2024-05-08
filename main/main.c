@@ -33,12 +33,14 @@
 #include "esp-now-communication.h"
 #include "pair.h"
 #include "button.h"
+#include "relay.h"
 
 void app_main() {
   uart_set_baudrate(0, 115200);
   pinout_gpio_init();
   nvs_flash_init();
   esp_now_communication_init();
+  relay_init();
   button_init();
 
   init_gateway_mac(button_is_pressed());
