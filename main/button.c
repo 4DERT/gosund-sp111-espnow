@@ -9,19 +9,43 @@
 
 static TaskHandle_t btn_task_handle;
 
+#define BIT_ISR (1 << 0)
+#define BIT_IGNORE (1 << 1)
+
 void button_isr_handler(void* arg) {
-  xTaskResumeFromISR(btn_task_handle);
-  taskYIELD();
+  BaseType_t xHigherPriorityTaskWoken = pdFALSE;
+
+  xTaskNotifyFromISR(btn_task_handle,
+                     BIT_ISR,
+                     eSetBits,
+                     &xHigherPriorityTaskWoken);
+
+  if (xHigherPriorityTaskWoken == pdTRUE) {
+    portYIELD_FROM_ISR();
+  }
+}
+
+void button_notify_ignore() {
+  xTaskNotify(btn_task_handle, BIT_IGNORE, eSetBits);
 }
 
 static void button_task(void* params) {
-  while (1) {
-    vTaskSuspend(NULL);
+  uint32_t reg = 0;
 
-    relay_toggle();
-    msgh_send_cmd_3_status();
+  while (1) {
+    xTaskNotifyWait(false, 0xFFFFFFFF, &reg, portMAX_DELAY);
+
+    if (reg & BIT_ISR && !(reg & BIT_IGNORE)) {
+      button_notify_ignore();
+      relay_toggle();
+      msgh_send_cmd_3_status();
+    }
 
     vTaskDelay(pdMS_TO_TICKS(BUTTON_BOUNCE_TIME_MS));
+
+    xTaskNotifyWait(false, 0xFFFFFFFF, &reg, 0);
+    reg = 0;
+
   }
 }
 
@@ -39,6 +63,6 @@ void button_init() {
   xTaskCreate(button_task, "button_task", BUTTON_TASK_STACK_DEPTH, NULL, BUTTON_TASK_PRIORITY, &btn_task_handle);
 }
 
-bool button_is_pressed(){
+bool button_is_pressed() {
   return gpio_get_level(BUTTON_GPIO) == BUTTON_PRESSED_LEVEL;
 }

@@ -7,6 +7,7 @@
 #include "pair.h"
 #include "protocol_messages.h"
 #include "relay.h"
+#include "button.h"
 
 static const char* TAG = "msgh";
 
@@ -55,12 +56,15 @@ static void parse_cmd_1(const char* parameter) {
 
 static void parse_cmd_3(const char* parameter) {
   if (!strcmp(PM_CMD_3_ON, parameter)) {
+    button_notify_ignore();
     relay_on();
     msgh_send_cmd_3_status();
   } else if (!strcmp(PM_CMD_3_OFF, parameter)) {
+    button_notify_ignore();
     relay_off();
     msgh_send_cmd_3_status();
   } else if (!strcmp(PM_CMD_3_TOGGLE, parameter)) {
+    button_notify_ignore();
     relay_toggle();
     msgh_send_cmd_3_status();
   } else {
