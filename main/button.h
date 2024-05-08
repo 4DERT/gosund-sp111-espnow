@@ -2,6 +2,7 @@
 #define BUTTON_H_
 
 #include <stdbool.h>
+#include "driver/gpio.h"
 
 #define BUTTON_BOUNCE_TIME_MS 300
 #define BUTTON_GPIO GPIO_NUM_13
