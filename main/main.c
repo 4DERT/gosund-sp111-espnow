@@ -29,17 +29,17 @@
 #include "tcpip_adapter.h"
 
 // project includes
-#include "pinout.h"
 #include "esp-now-communication.h"
 #include "pair.h"
 #include "button.h"
 #include "relay.h"
+#include "leds.h"
 
 void app_main() {
   uart_set_baudrate(0, 115200);
-  pinout_gpio_init();
   nvs_flash_init();
   esp_now_communication_init();
+  leds_init();
   relay_init();
   button_init();
 

@@ -3,7 +3,7 @@
 #include <stdbool.h>
 
 #include "esp-now-communication.h"
-#include "pinout.h"
+#include "leds.h"
 
 void relay_init() {
   gpio_config_t relay_cfg;
@@ -20,16 +20,16 @@ bool relay_get_state() {
 
 void relay_on() {
   gpio_set_level(RELAY_GPIO, RELAY_HIGH);
-  gpio_set_level(PINOUT_LED_RED_GPIO, PINOUT_LED_HIGH);
+  leds_set_level(LED_RED, LED_HIGH);
 }
 
 void relay_off() {
   gpio_set_level(RELAY_GPIO, RELAY_LOW);
-  gpio_set_level(PINOUT_LED_RED_GPIO, PINOUT_LED_LOW);
+  leds_set_level(LED_RED, LED_LOW);
 }
 
 void relay_toggle() {
   const bool state = relay_get_state();
   gpio_set_level(RELAY_GPIO, !state);
-  gpio_set_level(PINOUT_LED_RED_GPIO, (!state ? PINOUT_LED_HIGH : PINOUT_LED_LOW));
+  leds_set_level(LED_RED, (!state ? LED_HIGH : LED_LOW));
 }
