@@ -7,6 +7,7 @@
 #include "esp_system.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
+#include "message_handler.h"
 #include "nvs.h"
 #include "protocol_messages.h"
 
@@ -27,6 +28,11 @@ const mac_t* get_gateway_mac() {
   return &gateway;
 }
 
+static inline void wait_random_time_and_send_status() {
+  vTaskDelay(pdMS_TO_TICKS(esp_random() % 300));
+  msgh_send_cmd_3_status();
+}
+
 void pair_task(void* params) {
   esp_now_send_t data = {
       .data = PM_PAIR_REQUEST,
@@ -45,6 +51,7 @@ void pair_task(void* params) {
       is_paired = true;
       nvs_set_u64(nvs, NVS_MAC_KEY, gateway.value);
       nvs_commit(nvs);
+      wait_random_time_and_send_status();
       pair_task_handle = NULL;
       vTaskDelete(NULL);
     }
@@ -70,7 +77,6 @@ void init_gateway_mac(bool force_pair) {
     nvs_commit(nvs);
   } else {
     nvs_get_u64(nvs, NVS_MAC_KEY, &gateway.value);
-    ESP_LOGI(TAG, "MAC from NVS - " MACSTR, MAC2STR(gateway.bytes));
 
     if (gateway.value) {
       ESP_LOGI(TAG, "Got gateway MAC from NVS - " MACSTR, MAC2STR(gateway.bytes));
@@ -82,5 +88,7 @@ void init_gateway_mac(bool force_pair) {
   if (!is_paired) {
     ESP_LOGI(TAG, "Starting the pairing procedure");
     xTaskCreate(pair_task, "pair_task", 2048, NULL, 1, &pair_task_handle);
+  } else {
+    wait_random_time_and_send_status();
   }
 }
